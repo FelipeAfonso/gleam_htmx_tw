@@ -25,6 +25,6 @@ pub fn main() {
 }
 
 pub fn static_directory() -> String {
-  let assert Ok(priv_directory) = wisp.priv_directory("learning_gleam")
+  let assert Ok(priv_directory) = wisp.priv_directory("gleam_htmx_tw")
   priv_directory <> "/static"
 }
