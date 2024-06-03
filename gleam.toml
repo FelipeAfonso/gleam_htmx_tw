@@ -1,4 +1,4 @@
-name = "learning_gleam"
+name = "gleam_htmx_tw"
 version = "1.0.0"
 gleam = ">= 0.32.0"
 
