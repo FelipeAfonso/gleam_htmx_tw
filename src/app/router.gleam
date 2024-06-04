@@ -10,7 +10,7 @@ fn test_res() {
 pub fn handle_request(req: Request, ctx: web.Context) -> Response {
   use _req <- web.middleware(req, ctx)
   case wisp.path_segments(req) {
-    [] -> wisp.html_response(home_page(), 200)
+    [] -> home_page()
     // ["reload"] -> wisp.no_content()
     ["click"] -> wisp.html_response(test_res(), 200)
     _ -> wisp.not_found()

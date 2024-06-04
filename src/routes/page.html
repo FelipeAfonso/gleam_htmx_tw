@@ -1,7 +1,9 @@
-<script src="https://unpkg.com/htmx.org@1.9.12"></script>
-<link rel="stylesheet" href="/static/app.css" />
 <h1 class="text-blue-400 text-3xl font-bold">Hi there {{name}}</h1>
-
-<button class="px-3 py-1 bg-indigo-600 text-white rounded font-bold" hx-post="/click" hx-trigger="click" hx-swap="outerHTML">
-	Click me!
+<button
+    class="px-3 py-1 bg-indigo-600 text-white rounded font-bold"
+    hx-post="/click"
+    hx-trigger="click"
+    hx-swap="outerHTML"
+>
+    Click me!
 </button>

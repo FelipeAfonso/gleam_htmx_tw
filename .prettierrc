@@ -1,0 +1,10 @@
+{
+  "useTabs": false,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "semi": false,
+  "bracketSpacing": true,
+  "printWidth": 80,
+  "tabWidth": 4,
+  "htmlWhitespaceSensitivity": "ignore"
+}

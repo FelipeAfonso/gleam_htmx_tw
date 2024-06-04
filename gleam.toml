@@ -20,6 +20,8 @@ mist = ">= 1.2.0 and < 2.0.0"
 gleam_erlang = ">= 0.25.0 and < 1.0.0"
 glailglind = ">= 1.1.1 and < 2.0.0"
 gleam_bbmustache = ">= 2.2.0 and < 3.0.0"
+envoy = ">= 1.0.1 and < 2.0.0"
+libsql = ">= 0.0.1 and < 1.0.0"
 
 [dev-dependencies]
 gleeunit = ">= 1.0.0 and < 2.0.0"

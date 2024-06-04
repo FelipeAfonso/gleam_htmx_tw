@@ -1,14 +1,19 @@
 import gleam/bbmustache.{string}
 import gleam/string_builder
+import routes/layout
+import wisp
 
 pub fn home_page() {
-  let template = case bbmustache.compile_file("./src/routes/page.html") {
-    Ok(template) -> template
+  case bbmustache.compile_file("./src/routes/page.html") {
+    Ok(template) -> {
+      let rendered = bbmustache.render(template, [#("name", string("Bob"))])
+      let l = layout.get_str()
+      let stringified = string_builder.from_string(rendered)
+      let final = string_builder.concat([l, stringified])
+      wisp.html_response(final, 200)
+    }
     Error(_) -> {
-      let assert Ok(template) = bbmustache.compile("I failed you {{name}}")
-      template
+      wisp.internal_server_error()
     }
   }
-  let rendered = bbmustache.render(template, [#("name", string("Bob"))])
-  string_builder.from_string(rendered)
 }

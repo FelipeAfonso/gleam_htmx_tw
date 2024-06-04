@@ -1,3 +1,4 @@
+import app/db
 import app/router
 import app/web.{Context}
 import gleam/erlang/process
@@ -7,6 +8,7 @@ import wisp
 
 pub fn main() {
   wisp.configure_logger()
+  db.execute_query()
   let _ = tailwind.install()
   let _ =
     tailwind.run([
