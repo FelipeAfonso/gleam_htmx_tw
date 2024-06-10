@@ -1,9 +1,23 @@
-<h1 class="text-blue-400 text-3xl font-bold">Hi there {{name}}</h1>
-<button
-    class="px-3 py-1 bg-indigo-600 text-white rounded font-bold"
-    hx-post="/click"
-    hx-trigger="click"
-    hx-swap="outerHTML"
->
-    Click me!
-</button>
+<div class="h-full w-full flex flex-col gap-2 items-center justify-center">
+    <h1 class="text-blue-400 text-3xl font-bold">
+        Welcome to the
+        <strike class="font-normal">Go Horse</strike>
+        Gleam HTMX Stack!
+    </h1>
+    <p class="text-center text-lg font-medium">
+        Hello, {{name}}! You clicked
+        <span id="counter" class="text-xl font-bold text-blue-400">0</span>
+        times
+    </p>
+    <input type="hidden" name="count" value="0" />
+    <button
+        class="px-3 py-1.5 bg-indigo-600 text-white rounded font-bold"
+        hx-trigger="click"
+        hx-post="/increment"
+        hx-include="[name='count']"
+        hx-target="#counter"
+        hx-swap="innerHTML"
+    >
+        Increment
+    </button>
+</div>
