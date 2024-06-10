@@ -1,4 +1,8 @@
 <head>
     <link rel="stylesheet" href="/static/app.css" />
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <script src="/static/hr.js"></script>
 </head>
+<div hx-get="/reload" hx-trigger="every 0.5s" hx-target="#hr">
+    <div id="hr" />
+</div>

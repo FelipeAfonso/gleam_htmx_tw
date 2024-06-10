@@ -7,7 +7,7 @@ pub fn handle_request(req: Request, ctx: web.Context) -> Response {
   use _req <- web.middleware(req, ctx)
   case wisp.path_segments(req) {
     [] -> home_page()
-    // ["reload"] -> wisp.no_content()
+    ["reload"] -> wisp.no_content()
     ["increment"] -> increment(req)
     _ -> wisp.not_found()
   }
