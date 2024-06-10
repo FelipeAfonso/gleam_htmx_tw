@@ -7,7 +7,7 @@ import wisp
 
 pub fn main() {
   wisp.configure_logger()
-  // let _ = tailwind.install()
+  let _ = tailwind.install()
   let _ =
     tailwind.run([
       "--config=tailwind.config.js", "--input=./src/tailwind.css",
