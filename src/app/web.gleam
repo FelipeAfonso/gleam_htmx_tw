@@ -1,7 +1,7 @@
 import wisp
 
 pub type Context {
-  Context(static_directory: String)
+  Context(static_directory: String, build_id: String)
 }
 
 pub fn middleware(
