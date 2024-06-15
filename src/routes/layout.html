@@ -3,6 +3,6 @@
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <script src="/static/hr.js"></script>
 </head>
-<div hx-get="/reload" hx-trigger="every 0.5s" hx-target="#hr">
-    <div id="hr" />
+<div hx-get="/reload" hx-trigger="every 1s" hx-swap="none" hx-target="#hr">
+    <input type="hidden" id="hr" value="" />
 </div>
