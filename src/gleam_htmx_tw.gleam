@@ -5,37 +5,19 @@ import gleam/io
 import gleam/string
 import mist
 import radiate
+import simplifile
 import tailwind
 import wisp
 
+const tw_config = [
+  "--config=tailwind.config.js", "--input=./src/tailwind.css",
+  "--output=./priv/static/app.css",
+]
+
 pub fn main() {
   wisp.configure_logger()
-  let _ =
-    radiate.new()
-    |> radiate.add_dir("/Users/felipeafonso/code/personal/gleam_htmx_tw/src")
-    |> radiate.on_reload(fn(_state, path) {
-      io.println("Change in " <> path <> ", reloading!")
-      process.kill(process.self())
-      let _ = case string.ends_with(path, "html") {
-        True -> {
-          let _ =
-            tailwind.run([
-              "--config=tailwind.config.js", "--input=./src/tailwind.css",
-              "--output=./priv/static/app.css",
-            ])
-          Nil
-        }
-        _ -> Nil
-      }
-    })
-    |> radiate.start()
-
   let _ = tailwind.install()
-  let _ =
-    tailwind.run([
-      "--config=tailwind.config.js", "--input=./src/tailwind.css",
-      "--output=./priv/static/app.css",
-    ])
+  let _ = tailwind.run(tw_config)
   let secret_key_base = wisp.random_string(64)
   let ctx =
     Context(static_directory: static_directory(), build_id: secret_key_base)
@@ -45,6 +27,28 @@ pub fn main() {
     |> mist.new
     |> mist.port(3000)
     |> mist.start_http()
+
+  let _ =
+    radiate.new()
+    |> radiate.add_dir("/Users/felipeafonso/code/personal/gleam_htmx_tw/src")
+    |> radiate.on_reload(fn(_state, path) {
+      io.println("Change in " <> path <> ", reloading!")
+      let unique_key = wisp.random_string(64)
+      let assert Ok(_) =
+        unique_key
+        |> simplifile.write(
+          to: "/Users/felipeafonso/code/personal/gleam_htmx_tw/src/.hrid",
+        )
+      let _ = case string.ends_with(path, "html") {
+        True -> {
+          let _ = tailwind.run(tw_config)
+          Nil
+        }
+        _ -> Nil
+      }
+    })
+    |> radiate.start()
+
   process.sleep_forever()
 }
 

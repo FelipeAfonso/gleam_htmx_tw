@@ -10,9 +10,19 @@ pub fn middleware(
   handle_request: fn(wisp.Request) -> wisp.Response,
 ) -> wisp.Response {
   let req = wisp.method_override(req)
-  use <- wisp.log_request(req)
+  use <- selective_logging(req)
   use <- wisp.rescue_crashes
   use req <- wisp.handle_head(req)
   use <- wisp.serve_static(req, under: "/static", from: ctx.static_directory)
   handle_request(req)
+}
+
+fn selective_logging(
+  req: wisp.Request,
+  usage: fn() -> wisp.Response,
+) -> wisp.Response {
+  case req.path {
+    "/reload" -> usage()
+    _ -> wisp.log_request(req, usage)
+  }
 }

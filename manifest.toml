@@ -32,7 +32,7 @@ packages = [
 ]
 
 [requirements]
-fs = { version = ">= 8.6.1 and < 9.0.0"}
+fs = { version = ">= 8.6.1 and < 9.0.0" }
 glailglind = { version = ">= 1.1.1 and < 2.0.0" }
 gleam_bbmustache = { version = ">= 2.2.0 and < 3.0.0" }
 gleam_erlang = { version = ">= 0.25.0 and < 1.0.0" }
@@ -41,4 +41,5 @@ gleam_stdlib = { version = ">= 0.32.0" }
 gleeunit = { version = ">= 1.0.0 and < 2.0.0" }
 mist = { version = ">= 1.2.0 and < 2.0.0" }
 shellout = { version = ">= 1.6.0 and < 2.0.0" }
+simplifile = { version = ">= 1.7.0 and < 2.0.0"}
 wisp = { version = ">= 0.14.0 and < 1.0.0" }
