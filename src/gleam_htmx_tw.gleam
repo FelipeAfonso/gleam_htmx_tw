@@ -8,21 +8,29 @@ import radiate
 import tailwind
 import wisp
 
+const tw_config = [
+  "--config=tailwind.config.js", "--input=./src/tailwind.css",
+  "--output=./priv/static/app.css",
+]
+
 pub fn main() {
   wisp.configure_logger()
+  let sub = process.new_subject()
+  let secret_key_base = wisp.random_string(64)
+  process.send(sub, secret_key_base)
+  let _ = tailwind.install()
+  let _ = tailwind.run(tw_config)
   let _ =
     radiate.new()
-    |> radiate.add_dir("/Users/felipeafonso/code/personal/gleam_htmx_tw/src")
+    // if you're using macos change this to absolute
+    |> radiate.add_dir("src")
     |> radiate.on_reload(fn(_state, path) {
-      io.println("Change in " <> path <> ", reloading!")
-      process.kill(process.self())
+      wisp.log_info("Change in " <> path <> ", reloading!")
+      let secret_key_base = wisp.random_string(64)
+      process.send(sub, secret_key_base)
       let _ = case string.ends_with(path, "html") {
         True -> {
-          let _ =
-            tailwind.run([
-              "--config=tailwind.config.js", "--input=./src/tailwind.css",
-              "--output=./priv/static/app.css",
-            ])
+          let _ = tailwind.run(tw_config)
           Nil
         }
         _ -> Nil
@@ -30,15 +38,7 @@ pub fn main() {
     })
     |> radiate.start()
 
-  let _ = tailwind.install()
-  let _ =
-    tailwind.run([
-      "--config=tailwind.config.js", "--input=./src/tailwind.css",
-      "--output=./priv/static/app.css",
-    ])
-  let secret_key_base = wisp.random_string(64)
-  let ctx =
-    Context(static_directory: static_directory(), build_id: secret_key_base)
+  let ctx = Context(static_directory: static_directory(), sub: sub)
   let handler = router.handle_request(_, ctx)
   let assert Ok(_) =
     wisp.mist_handler(handler, secret_key_base)

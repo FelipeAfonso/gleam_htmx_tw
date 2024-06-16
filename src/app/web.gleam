@@ -1,7 +1,8 @@
+import gleam/erlang/process.{type Subject}
 import wisp
 
 pub type Context {
-  Context(static_directory: String, build_id: String)
+  Context(static_directory: String, sub: Subject(String))
 }
 
 pub fn middleware(
