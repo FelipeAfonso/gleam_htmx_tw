@@ -1,11 +1,30 @@
-import gleam/bbmustache
+import argv
+import gleam/bbmustache.{string}
 import gleam/string_builder
+
+const hr_script = "<script src=\"/static/hr.js\"></script>"
+
+const hr_trigger = "<div hx-get=\"/reload\" hx-trigger=\"every 1s\" hx-swap=\"none\" hx-target=\"#hr\">
+    <input type=\"hidden\" id=\"hr\" value=\"\" />
+</div>"
 
 pub fn get_str() {
   case bbmustache.compile_file("./src/routes/layout.html") {
     Ok(template) -> {
-      let rendered = bbmustache.render(template, [])
-      string_builder.from_string(rendered)
+      case argv.load().arguments {
+        ["dev"] -> {
+          let rendered =
+            bbmustache.render(template, [
+              #("hr_script", string(hr_script)),
+              #("hr_trigger", string(hr_trigger)),
+            ])
+          string_builder.from_string(rendered)
+        }
+        _ -> {
+          let rendered = bbmustache.render(template, [])
+          string_builder.from_string(rendered)
+        }
+      }
     }
     Error(_) -> {
       string_builder.from_string("")

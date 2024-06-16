@@ -1,5 +1,7 @@
 import app/router
 import app/web.{Context}
+import argv
+import config.{src_path, tw_config}
 import gleam/erlang/process
 import gleam/io
 import gleam/string
@@ -8,11 +10,6 @@ import radiate
 import simplifile
 import tailwind
 import wisp
-
-const tw_config = [
-  "--config=tailwind.config.js", "--input=./src/tailwind.css",
-  "--output=./priv/static/app.css",
-]
 
 pub fn main() {
   wisp.configure_logger()
@@ -28,26 +25,34 @@ pub fn main() {
     |> mist.port(3000)
     |> mist.start_http()
 
-  let _ =
-    radiate.new()
-    |> radiate.add_dir("/Users/felipeafonso/code/personal/gleam_htmx_tw/src")
-    |> radiate.on_reload(fn(_state, path) {
-      io.println("Change in " <> path <> ", reloading!")
-      let unique_key = wisp.random_string(64)
-      let assert Ok(_) =
-        unique_key
-        |> simplifile.write(
-          to: "/Users/felipeafonso/code/personal/gleam_htmx_tw/src/.hrid",
-        )
-      let _ = case string.ends_with(path, "html") {
-        True -> {
-          let _ = tailwind.run(tw_config)
-          Nil
-        }
-        _ -> Nil
-      }
-    })
-    |> radiate.start()
+  case argv.load().arguments {
+    ["dev"] -> {
+      io.println("Running with Hot Reload")
+      let _ =
+        radiate.new()
+        |> radiate.add_dir(src_path)
+        |> radiate.on_reload(fn(_state, path) {
+          io.println("Change in " <> path <> ", reloading!")
+          let unique_key = wisp.random_string(64)
+          let assert Ok(_) =
+            unique_key
+            |> simplifile.write(to: src_path <> "/.hrid")
+          let _ = case string.ends_with(path, "html") {
+            True -> {
+              let _ = tailwind.run(tw_config)
+              Nil
+            }
+            _ -> Nil
+          }
+        })
+        |> radiate.start()
+      Nil
+    }
+    _ -> {
+      io.println("Running without Hot Reload")
+      Nil
+    }
+  }
 
   process.sleep_forever()
 }

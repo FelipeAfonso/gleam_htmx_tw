@@ -4,8 +4,10 @@ This project is a basic clean starter that is still WIP. The idea is to have an 
 
 ## Development
 
+Use the following command to start your web page at http://localhost:3000
 ```sh
-watchexec -r -e gleam,html -- gleam run
+gleam run dev #with hot reload
+gleam run #without hr, ideally for prod environments 
 ```
 
 ## Acknowledgements

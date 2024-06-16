@@ -6,7 +6,7 @@ import wisp
 pub fn home_page() {
   case bbmustache.compile_file("./src/routes/page.html") {
     Ok(template) -> {
-      let rendered = bbmustache.render(template, [#("name", string("John"))])
+      let rendered = bbmustache.render(template, [#("name", string("Bob"))])
       let l = layout.get_str()
       let stringified = string_builder.from_string(rendered)
       let final = string_builder.concat([l, stringified])
