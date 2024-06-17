@@ -1,5 +1,7 @@
 import argv
+import config.{dyn_src_path}
 import gleam/bbmustache.{string}
+import gleam/io
 import gleam/string_builder
 
 const hr_script = "<script src=\"/static/hr.js\"></script>"
@@ -9,7 +11,7 @@ const hr_trigger = "<div hx-get=\"/reload\" hx-trigger=\"every 1s\" hx-swap=\"no
 </div>"
 
 pub fn get_str() {
-  case bbmustache.compile_file("./src/routes/layout.html") {
+  case bbmustache.compile_file(dyn_src_path() <> "/routes/layout.html") {
     Ok(template) -> {
       case argv.load().arguments {
         ["dev"] -> {
@@ -26,7 +28,8 @@ pub fn get_str() {
         }
       }
     }
-    Error(_) -> {
+    Error(e) -> {
+      io.debug(e)
       string_builder.from_string("")
     }
   }

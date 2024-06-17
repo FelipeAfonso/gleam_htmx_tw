@@ -1,7 +1,7 @@
 import app/router
 import app/web.{Context}
 import argv
-import config.{src_path, tw_config}
+import config.{dyn_src_path, tw_config}
 import gleam/erlang/process
 import gleam/io
 import gleam/string
@@ -22,7 +22,7 @@ pub fn main() {
   let assert Ok(_) =
     wisp.mist_handler(handler, secret_key_base)
     |> mist.new
-    |> mist.port(3000)
+    |> mist.port(8080)
     |> mist.start_http()
 
   case argv.load().arguments {
@@ -30,13 +30,13 @@ pub fn main() {
       io.println("Running with Hot Reload")
       let _ =
         radiate.new()
-        |> radiate.add_dir(src_path)
+        |> radiate.add_dir(dyn_src_path())
         |> radiate.on_reload(fn(_state, path) {
           io.println("Change in " <> path <> ", reloading!")
           let unique_key = wisp.random_string(64)
           let assert Ok(_) =
             unique_key
-            |> simplifile.write(to: src_path <> "/.hrid")
+            |> simplifile.write(to: dyn_src_path() <> "/.hrid")
           let _ = case string.ends_with(path, "html") {
             True -> {
               let _ = tailwind.run(tw_config)

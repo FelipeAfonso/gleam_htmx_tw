@@ -1,6 +1,6 @@
 import app/web
 import argv
-import config.{src_path}
+import config.{dyn_src_path}
 import gleam/string
 import routes/increment/action.{increment}
 import routes/page.{home_page}
@@ -14,7 +14,9 @@ pub fn handle_request(req: Request, ctx: web.Context) -> Response {
     ["reload"] -> {
       case argv.load().arguments {
         ["dev"] -> {
-          let unique_key = case simplifile.read(from: src_path <> "/.hrid") {
+          let unique_key = case
+            simplifile.read(from: dyn_src_path() <> "/.hrid")
+          {
             Ok(key) -> key
             Error(e) -> {
               wisp.log_error(string.inspect(e))
