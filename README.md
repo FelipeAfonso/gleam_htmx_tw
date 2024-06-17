@@ -4,7 +4,7 @@ This project is a basic clean starter that is still WIP. The idea is to have an 
 
 ## Development
 
-Use the following command to start your web page at http://localhost:3000
+Use the following command to start your web page at http://localhost:8080
 ```sh
 gleam run dev #with hot reload
 gleam run #without hr, ideally for prod environments 
