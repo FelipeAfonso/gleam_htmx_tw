@@ -34,9 +34,6 @@ pub fn main() {
         |> radiate.on_reload(fn(_state, path) {
           io.println("Change in " <> path <> ", reloading!")
           let unique_key = wisp.random_string(64)
-          let assert Ok(_) =
-            unique_key
-            |> simplifile.write(to: dyn_src_path() <> "/.hrid")
           let _ = case string.ends_with(path, "html") {
             True -> {
               let _ = tailwind.run(tw_config)
@@ -44,6 +41,10 @@ pub fn main() {
             }
             _ -> Nil
           }
+          let assert Ok(_) =
+            unique_key
+            |> simplifile.write(to: dyn_src_path() <> "/.hrid")
+          Nil
         })
         |> radiate.start()
       Nil
